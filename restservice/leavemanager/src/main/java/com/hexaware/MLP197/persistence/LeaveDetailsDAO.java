@@ -14,25 +14,25 @@ import java.util.List;
  * The DAO class for employee.
  */
 public interface LeaveDetailsDAO {
-  /**
-   * return all the details of all the employees.
-   * 
-   * @return the employee array
-   */
-  @SqlQuery("SELECT * FROM EMPLOYEES")
-  @Mapper(LeaveDetailsMapper.class)
-  List<LeaveDetails> list();
+    /**
+     * return all the details of all the employees.
+     * 
+     * @return the employee array
+     */
 
+    @SqlUpdate("INSERT INTO LEAVE_DETAILS(LEAVE_START_DATE, LEAVE_END_DATE, LEAVE_TYPE, LEAVE_REASON, EMP_ID, LEAVE_COMMENT) "
+            + "VALUES(:leaveStartDate, :leaveEndDate, :leaveType, :leaveReason, :empId, :leaveComment)")
+    @Mapper(LeaveDetailsMapper.class)
+    void applyLeaveDAO(@Bind("empId") int empId, @Bind("leaveStartDate") Date leaveStartDate,
+            @Bind("leaveEndDate") Date leaveEndDate, @Bind("leaveType") String leaveType,
+            @Bind("leaveReason") String leaveReason, @Bind("leaveComment") String leaveComment);
 
-  @SqlUpdate("INSERT INTO LEAVE_DETAILS(LEAVE_START_DATE, LEAVE_END_DATE, LEAVE_TYPE, LEAVE_REASON, EMP_ID, LEAVE_COMMENT) "+
-              "VALUES(:leaveStartDate, :leaveEndDate, :leaveType, :leaveReason, :empId, :leaveComment)")
-  @Mapper(LeaveDetailsMapper.class)
-  void applyLeaveDAO(@Bind("empId") int empId, @Bind("leaveStartDate") Date leaveStartDate,
-      @Bind("leaveEndDate") Date leaveEndDate, @Bind("leaveType") String leaveType,
-      @Bind("leaveReason") String leaveReason, @Bind("leaveComment") String leaveComment);
+    @SqlQuery("SELECT * FROM LEAVE_DETAILS WHERE LEAVE_DETAILS.EMP_ID = :empId")
+    @Mapper(LeaveDetailsMapper.class)
+    List<LeaveDetails> getLeaveHistory(@Bind("empId") int empId);
 
-  /**
-   * close with no args is used to close the connection.
-   */
-  void close();
+    /**
+     * close with no args is used to close the connection.
+     */
+    void close();
 }
