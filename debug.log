@@ -1,0 +1,5 @@
+<<<<<<< HEAD
+[0107/145235.685:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: The pipe has been ended. (0x6D)
+=======
+[0107/155314.819:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: The pipe has been ended. (0x6D)
+>>>>>>> cd986c0b0159b150564f71918b8eff7fb48af396
