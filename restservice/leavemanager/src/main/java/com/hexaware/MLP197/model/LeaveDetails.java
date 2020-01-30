@@ -3,6 +3,7 @@ package com.hexaware.MLP197.model;
 import com.hexaware.MLP197.persistence.DbConnection;
 import com.hexaware.MLP197.persistence.LeaveDetailsDAO;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -268,5 +269,10 @@ public class LeaveDetails {
         final String leaveComment) {
         
         dao().applyLeaveDAO(empId, leaveStartDate, leaveEndDate, leaveType, leaveReason, leaveComment);
+    }
+
+    public static LeaveDetails[] leaveHistory(final int empId) {
+        final List<LeaveDetails> es = dao().getLeaveHistory(empId);
+        return es.toArray(new LeaveDetails[es.size()]);
     }
 }
