@@ -16,7 +16,6 @@ import java.util.List;
 public interface EmployeeDAO {
   /**
    * return all the details of all the employees.
-   * 
    * @return the employee array
    */
   @SqlQuery("SELECT * FROM EMPLOYEES E, EMPLOYEES M WHERE E.EMP_MANAGER_ID = M.EMP_ID")
@@ -25,7 +24,6 @@ public interface EmployeeDAO {
 
   /**
    * return all the details of the selected employee.
-   * 
    * @param empID the id of the employee
    * @return the employee object
    */
@@ -33,16 +31,31 @@ public interface EmployeeDAO {
   @Mapper(EmployeeMapper.class)
   Employee find(@Bind("empID") int empID);
 
-  @SqlQuery("SELECT M.* FROM EMPLOYEES E "+
-            "JOIN EMPLOYEES M ON E.EMP_MANAGER_ID = M.EMP_ID WHERE E.EMP_ID = :empID")
+  /**
+   * returns all the manager details.
+   * @param empID the id of the employee
+   * @return the employee object
+   */
+  @SqlQuery("SELECT M.* FROM EMPLOYEES E "
+            + "JOIN EMPLOYEES M ON "
+            + "E.EMP_MANAGER_ID = M.EMP_ID "
+            + "WHERE E.EMP_ID = :empID")
   @Mapper(EmployeeManagerMapper.class)
   Employee findManager(@Bind("empID") int empID);
-  
-  @SqlUpdate("INSERT INTO LEAVE_DETAILS(LEAVE_START_DATE,LEAVE_END_DATE,LEAVE_TYPE,EMP_ID,LEAVE_COMMENT)VALUES(:leaveStartDate,:leaveEndDate,:leaveType,:empId,:leaveComment)")
+  /**
+   * inserts leave details.
+   * @param leaveStartDate the leave starting date
+   * @param leaveEndDate the leave ending date
+   * @param leaveType the leave type
+   * @param empId the employee id
+   * @param leaveComment the leave comment
+   */
+  @SqlUpdate("INSERT INTO LEAVE_DETAILS"
+            + "(LEAVE_START_DATE,LEAVE_END_DATE,LEAVE_TYPE,EMP_ID,LEAVE_COMMENT) "
+            + "VALUES(:leaveStartDate,:leaveEndDate,:leaveType,:empId,:leaveComment)")
   void applyLeaveDAO(@Bind("leaveStartDate") Date leaveStartDate,
-      @Bind("leaveEndDate") Date leaveEndDate, @Bind("leaveType") String leaveType,@Bind("empId") int empId,
+      @Bind("leaveEndDate") Date leaveEndDate, @Bind("leaveType") String leaveType, @Bind("empId") int empId,
       @Bind("leaveComment") String leaveComment);
-
   /**
    * close with no args is used to close the connection.
    */

@@ -13,7 +13,7 @@
     <build.number>SNAPSHOT</build.number>
   </properties>
   <build>
-    <!-- <plugins>
+    <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -114,7 +114,7 @@
           <version>2.17</version>
         </plugin>
       </plugins>
-    </pluginManagement> -->
+    </pluginManagement>
     </build>
   <dependencyManagement>
     <dependencies>

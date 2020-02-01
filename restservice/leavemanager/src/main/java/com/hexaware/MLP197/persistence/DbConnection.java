@@ -12,7 +12,7 @@ public class DbConnection {
      */
   public final DBI getConnect() {
     try {
-      Class.forName("com.mysql.jdbc.Driver");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       String dbc = System.getenv("DB_CONNECTION");
       if (dbc == null || dbc.equals("")) {
         dbc = "localhost:3306";
