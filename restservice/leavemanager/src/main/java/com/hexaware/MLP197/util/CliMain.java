@@ -3,6 +3,7 @@ package com.hexaware.MLP197.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+// import java.util.Locale;
 import java.util.Scanner;
 import com.hexaware.MLP197.model.Employee;
 import com.hexaware.MLP197.model.LeaveDetails;
@@ -24,7 +25,9 @@ public class CliMain {
     System.out.println("4. Approve / Deny Leave");
     System.out.println("5. View Leave History");
     System.out.println("6. Applying for leave");
-    System.out.println("7. Exit");
+    System.out.println("7. Listing Employees by Manager");
+    // System.out.println("7. View Employees by Department");
+    System.out.println("8. Exit");
     System.out.println("Enter your choice:");
     int menuOption = option.nextInt();
     mainMenuDetails(menuOption);
@@ -51,14 +54,63 @@ public class CliMain {
         applyLeave();
         break;
       case 7:
+        listEmployeeByManager();
+        break;
+      // case 7:
+      //   listEmployeesByDepartment();
+      //   break;
+      case 8:
       // halt since normal exit throws a stacktrace due to jdbc threads not responding
         Runtime.getRuntime().halt(0);
       default:
-        System.out.println("Choose either 1, 2, 3, 4, 5, 6 or 7");
+        System.out.println("Choose either 1, 2, 3, 4, 5, 6, 7 or 8");
     }
     mainMenu();
   }
+  private void listEmployeeByManager() {
+    System.out.println("Enter the manager ID : ");
+    int managerId = input.nextInt();
+    Employee[] employees = Employee.findByManager(managerId);
+    if (employees.length == 0) {
+      System.out.println("No such manager exists");
+    } else {
+      for (Employee e : employees) {
+        System.out.println("----------------");
+        System.out.println("EMPLOYEE DETAILS");
+        System.out.println("----------------");
+        System.out.println("Employee Full Name : " + e.getEmpFullName());
+        System.out.println("Employee Email : " + e.getEmail());
+        System.out.println("Employee Mobile : " + e.getEmpMobile());
+        System.out.println("Date of Joining : " + e.getEmpDateOfJoining());
+        System.out.println("Employee Designation : " + e.getEmpDesignation());
+        System.out.println("Employee Department : " + e.getEmpDepartment());
+        System.out.println("");
+      }
+    }
+  }
 
+  // private void listEmployeesByDepartment() {
+  //   System.out.println("Enter the department name : ");
+  //   String dept = input.next();
+  //   String department = dept.toUpperCase(Locale.getDefault());
+  //   Employee[] employees = Employee.getEmployeesByDepartment(department);
+  //   if (employees.length == 0) {
+  //     System.out.println("No Such department exists");
+  //   } else {
+  //     for (Employee e : employees) {
+  //       System.out.println("----------------");
+  //       System.out.println("EMPLOYEE DETAILS");
+  //       System.out.println("----------------");
+  //       System.out.println("Employee Full Name : " + e.getEmpFullName());
+  //       System.out.println("Employee Email : " + e.getEmail());
+  //       System.out.println("Employee Mobile : " + e.getEmpMobile());
+  //       System.out.println("Date of Joining : " + e.getEmpDateOfJoining());
+  //       System.out.println("Employee Designation : " + e.getEmpDesignation());
+  //       System.out.println("Employee Department : " + e.getEmpDepartment());
+  //       System.out.println("");
+  //     }
+  //   }
+  // }
   /**
    * listing single employee.
    */
@@ -69,6 +121,9 @@ public class CliMain {
     if (employee == null) {
       System.out.println("Sorry, No such employee");
     } else {
+      System.out.println("----------------");
+      System.out.println("EMPLOYEE DETAILS");
+      System.out.println("----------------");
       System.out.println("Employee ID : " + employee.getEmpId());
       System.out.println("Employee Full Name : " + employee.getEmpFullName());
       System.out.println("Employee Email : " + employee.getEmail());
@@ -84,24 +139,28 @@ public class CliMain {
     */
   private void listEmployeesDetails() {
     Employee[] employee = Employee.listAll();
-    for (Employee e : employee) {
-      System.out.println("Employee Id" + e.getEmpId());
-      System.out.println("Employee Full Name : " + e.getEmpFullName());
-      System.out.println("Employee Email : " + e.getEmail());
-      System.out.println("Employee Mobile : " + e.getEmpMobile());
-      System.out.println("Date of Joining : " + e.getEmpDateOfJoining());
-      System.out.println("Employee Designation : " + e.getEmpDesignation());
-      System.out.println("Employee Department : " + e.getEmpDepartment());
-      System.out.println("Employee Leave Balance : " + e.getEmpLeaveBalance());
+    if (employee.length == 0) {
+      System.out.println("No employees exists.");
+    } else {
+      for (Employee e : employee) {
+        System.out.println("----------------");
+        System.out.println("EMPLOYEE DETAILS");
+        System.out.println("----------------");
+        System.out.println("Employee Id : " + e.getEmpId());
+        System.out.println("Employee Full Name : " + e.getEmpFullName());
+        System.out.println("Employee Email : " + e.getEmail());
+        System.out.println("Employee Mobile : " + e.getEmpMobile());
+        System.out.println("Date of Joining : " + e.getEmpDateOfJoining());
+        System.out.println("Employee Designation : " + e.getEmpDesignation());
+        System.out.println("Employee Department : " + e.getEmpDepartment());
+        System.out.println("Employee Leave Balance : " + e.getEmpLeaveBalance());
+      }
     }
   }
     /**
      * Listing leave History.
      */
   private void listLeaveHistory() {
-    System.out.println("--------------");
-    System.out.println("Leave History");
-    System.out.println("--------------");
     System.out.println("Enter the employee ID");
     int empId = input.nextInt();
     LeaveDetails[] leaveDetails = LeaveDetails.leaveHistory(empId);
@@ -109,7 +168,7 @@ public class CliMain {
       System.out.println("Sorry, No records found for this emp id");
     } else {
       for (LeaveDetails ld : leaveDetails) {
-        System.out.println("--------------");
+        System.out.println("---------------------");
         System.out.println("Leave History Details");
         System.out.println("---------------------");
         System.out.println("Leave ID : " + ld.getLeaveId());
@@ -118,11 +177,9 @@ public class CliMain {
         System.out.println("Leave Type : " + ld.getLeaveType());
         System.out.println("Leave Reason : " + ld.getLeaveReason());
         System.out.println("Leave Status : " + ld.getLeaveReason());
-
       }
     }
   }
-
     /**
      * Listing Manager Details.
      */
@@ -134,7 +191,7 @@ public class CliMain {
     if (manager == null) {
       System.out.println("Sorry, No manager exists");
     } else {
-      System.out.println("--------------");
+      System.out.println("---------------");
       System.out.println("Manager Details");
       System.out.println("---------------");
       System.out.println("Manager ID : " + manager.getEmpId());
@@ -157,6 +214,9 @@ public class CliMain {
     if (leaveDetails == null) {
       System.out.println("There is no record");
     } else {
+      System.out.println("----------------");
+      System.out.println("LEAVE DETAILS");
+      System.out.println("----------------");
       System.out.println("Leave_ID : " + leaveDetails.getLeaveId());
       System.out.println("Leave_START_DATE : " + leaveDetails.getLeaveStartDate());
       System.out.println("Leave_END_DATE : " + leaveDetails.getLeaveEndDate());
@@ -209,15 +269,15 @@ public class CliMain {
     System.out.println("Enter the end date : ");
     String endDate = input.next();
     Date parsedEndDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
-    System.out.println("Select leave type");
-    System.out.println("1. optional leave");
-    System.out.println("2. maternity leave");
-    System.out.println("3. paternity leave");
+    System.out.println("Select leave type : ");
+    System.out.println("1. Earned Leave");
+    System.out.println("2. Maternity Leave");
+    System.out.println("3. Paternity Leave");
     int leavechoice = option.nextInt();
     String leaveType = "";
     switch (leavechoice) {
       case 1:
-        leaveType = "OPTIONAL_LEAVE";
+        leaveType = "EARNED_LEAVE";
         break;
       case 2:
         leaveType = "MATERNITY_LEAVE";
@@ -227,18 +287,21 @@ public class CliMain {
         break;
       default:
         System.out.println("INVALID_CHOICE");
-        System.exit(0);
+        // System.exit(0);
+        Runtime.getRuntime().halt(0);
     }
 
-    System.out.println("enter the reason for leave");
+    System.out.println("Enter the reason for leave : ");
     String leaveReason = option.next();
 
-    System.out.println("Enter the leave Comment");
+    System.out.println("Enter the leave Comment : ");
     String leaveComment = option.next();
     LeaveDetails.leaveApply(empId, parsedStartDate, parsedEndDate, leaveType, leaveReason, leaveComment);
-    System.out.println("leave applied successfully");
-    System.exit(0);
-
+    System.out.println("--------------------------");
+    System.out.println("LEAVE APPLIED SUCCESSFULLY");
+    System.out.println("--------------------------");
+    // System.exit(0);
+    Runtime.getRuntime().halt(0);
   }
   /**
    * @param leaveId to set leave id.

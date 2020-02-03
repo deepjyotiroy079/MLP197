@@ -52,12 +52,15 @@ public class LeaveDetails {
         final String argLeaveType, final String argLeaveReason, final String argLeaveStatus,
          final Date argLeaveAppliedOn, final String argLeaveComment, final int argEmpId) {
     this.leaveId = argLeaveId;
-    this.leaveStartDate = argLeaveStartDate;
-    this.leaveEndDate = argLeaveEndDate;
+    Date startDate = new Date(argLeaveStartDate.getTime());
+    this.leaveStartDate = startDate;
+    Date endDate = new Date(argLeaveEndDate.getTime());
+    this.leaveEndDate = endDate;
     this.leaveType = argLeaveType;
     this.leaveReason = argLeaveReason;
     this.leaveStatus = argLeaveStatus;
-    this.leaveAppliedOn = argLeaveAppliedOn;
+    Date appliedOn = new Date(argLeaveAppliedOn.getTime());
+    this.leaveAppliedOn = appliedOn;
     this.leaveComment = argLeaveComment;
     this.empId = argEmpId;
   }
@@ -82,7 +85,7 @@ public class LeaveDetails {
   }
 
   @Override
-    public final int hashCode() {
+  public final int hashCode() {
     return Objects.hash(leaveId, leaveStartDate, leaveEndDate, leaveType, leaveStatus, leaveReason, empId,
     leaveComment, leaveAppliedOn);
   }
@@ -108,7 +111,8 @@ public class LeaveDetails {
      * @return leavestartDate.
      */
   public final Date getLeaveStartDate() {
-    return leaveStartDate;
+    Date startDate = leaveStartDate;
+    return startDate;
   }
 
     /**
@@ -116,7 +120,8 @@ public class LeaveDetails {
      * @param argLeaveStartDate to set the Leave start date.
      */
   public final void setLeaveStartDate(final Date argLeaveStartDate) {
-    this.leaveStartDate = argLeaveStartDate;
+    Date startDate = new Date(argLeaveStartDate.getTime());
+    this.leaveStartDate = startDate;
   }
 
     /**
@@ -124,7 +129,8 @@ public class LeaveDetails {
      * @return leaveEnddate.
      */
   public final Date getLeaveEndDate() {
-    return leaveEndDate;
+    Date endDate = leaveEndDate;
+    return endDate;
   }
 
     /**
@@ -132,7 +138,8 @@ public class LeaveDetails {
      * @param argLeaveEndDate to set the leave end date.
      */
   public final void setLeaveEndDate(final Date argLeaveEndDate) {
-    this.leaveEndDate = argLeaveEndDate;
+    Date endDate = new Date(argLeaveEndDate.getTime());
+    this.leaveEndDate = endDate;
   }
 
     /**
@@ -188,7 +195,8 @@ public class LeaveDetails {
      * @return leaveAppliedOn.
      */
   public final Date getLeaveAppliedOn() {
-    return leaveAppliedOn;
+    Date appliedOn = leaveAppliedOn;
+    return appliedOn;
   }
 
     /**
@@ -196,7 +204,8 @@ public class LeaveDetails {
      * @param argLeaveAppliedOn to set the leave applied on.
      */
   public final void setLeaveAppliedOn(final Date argLeaveAppliedOn) {
-    this.leaveAppliedOn = argLeaveAppliedOn;
+    Date appliedOn = new Date(argLeaveAppliedOn.getTime());
+    this.leaveAppliedOn = appliedOn;
   }
 
     /**
@@ -288,7 +297,14 @@ public class LeaveDetails {
      */
   public static void leaveApply(final int argEmpId, final Date argLeaveStartDate, final Date argLeaveEndDate,
       final String argLeaveType, final String argLeaveReason, final String argLeaveComment) {
-
+    if (argLeaveStartDate.compareTo(argLeaveEndDate) > 0) {
+      System.out.println("Leave End Date should be greater than equal to Leave Start Date!");
+      Runtime.getRuntime().halt(0);
+    }
+    if (argLeaveStartDate.compareTo(new Date()) < 0) { // starting date is less than todays date
+      System.out.println("Leave Start Date should not be in past!");
+      Runtime.getRuntime().halt(0);
+    }
     dao().applyLeaveDAO(argEmpId, argLeaveStartDate, argLeaveEndDate, argLeaveType, argLeaveReason, argLeaveComment);
   }
     /**

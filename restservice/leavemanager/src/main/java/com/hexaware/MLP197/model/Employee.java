@@ -259,6 +259,23 @@ public class Employee {
         + ", empDesignation=" + empDesignation + ", empFullName=" + empFullName + ", empId=" + empId
         + ", empLeaveBalance=" + empLeaveBalance + ", empManagerID=" + empManagerId + ", empMobile=" + empMobile + "]";
   }
-
+  // /**
+  //  * returns all the employees from given department....
+  //  * @param argsDepartmentName the department name
+  //  * @return the list of employees working in the given department
+  //  */
+  // public static Employee[] getEmployeesByDepartment(final String argsDepartmentName) {
+  //   final List<Employee> es = dao().employeesByDepartment(argsDepartmentName);
+  //   return es.toArray(new Employee[es.size()]);
+  // }
+  /**
+   * to return list of employees working uder a manager.
+   * @param argsManagerId the manager id
+   * @return the list of employees working under given manager
+   */
+  public static Employee[] findByManager(final int argsManagerId) {
+    final List<Employee> es = dao().findEmployeeViaManager(argsManagerId);
+    return es.toArray(new Employee[es.size()]);
+  }
 
 }

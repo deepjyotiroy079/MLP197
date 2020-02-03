@@ -56,6 +56,23 @@ public interface EmployeeDAO {
   void applyLeaveDAO(@Bind("leaveStartDate") Date leaveStartDate,
       @Bind("leaveEndDate") Date leaveEndDate, @Bind("leaveType") String leaveType, @Bind("empId") int empId,
       @Bind("leaveComment") String leaveComment);
+  // /**
+  //  * displays the employee details of employee working in given department.
+  //  * @param department the department name
+  //  * @return the list of employees working in given department
+  //  */
+  // @SqlQuery("SELECT * FROM EMPLOYEES "
+  //          + "WHERE EMP_DEPARTMENT = :department")
+  // @Mapper(EmployeeMapper.class)
+  // List<Employee> employeesByDepartment(@Bind("department") String department);
+  /**
+   * returns the list of all the employees working under a given manager.
+   * @param argsManagerId the manager id
+   * @return the list of employees
+   */
+  @SqlQuery("SELECT * FROM EMPLOYEES WHERE EMP_MANAGER_ID = :managerId")
+  @Mapper(EmployeeMapper.class)
+  List<Employee> findEmployeeViaManager(@Bind("managerId") int argsManagerId);
   /**
    * close with no args is used to close the connection.
    */
