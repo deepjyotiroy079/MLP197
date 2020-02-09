@@ -3,10 +3,14 @@ package com.hexaware.MLP197.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+// import java.util.Map;
 // import java.util.Locale;
 import java.util.Scanner;
+
 import com.hexaware.MLP197.model.Employee;
 import com.hexaware.MLP197.model.LeaveDetails;
+import com.hexaware.MLP197.model.EmployeeReport;
 
 /**
  * Class CliMain provides the command line interface to the leavemanagement
@@ -26,8 +30,10 @@ public class CliMain {
     System.out.println("5. View Leave History");
     System.out.println("6. Applying for leave");
     System.out.println("7. Listing Employees by Manager");
+    System.out.println("8. Employee Reports");
+    // System.out.println("9. Leave Details Reports");
     // System.out.println("7. View Employees by Department");
-    System.out.println("8. Exit");
+    System.out.println("9. Exit");
     System.out.println("Enter your choice:");
     int menuOption = option.nextInt();
     mainMenuDetails(menuOption);
@@ -56,10 +62,16 @@ public class CliMain {
       case 7:
         listEmployeeByManager();
         break;
+      case 8:
+        employeeReport();
+        break;
+      // case 9:
+      //   leaveDetailsReport();
+      //   break;
       // case 7:
       //   listEmployeesByDepartment();
       //   break;
-      case 8:
+      case 9:
       // halt since normal exit throws a stacktrace due to jdbc threads not responding
         Runtime.getRuntime().halt(0);
       default:
@@ -67,11 +79,30 @@ public class CliMain {
     }
     mainMenu();
   }
+  // private void leaveDetailsReport() {
+  // }
+  private void employeeReport() {
+    System.out.println("--------------------------------");
+    System.out.println("\tEMPLOYEE REPORTS");
+    System.out.println("--------------------------------");
+    // System.out.println(Employee.getEmployeeDetails());
+    List<EmployeeReport> reports = Employee.getEmployeeDetails();
+    // int empCount = (int)
+    // System.out.println(reports.size());
+    // System.out.println("Total Number of Employees : " + Integer.valueEmployee.getEmployeeCount());
+    for (EmployeeReport employee : reports) {
+      System.out.println("Department : " + employee.getDepartment() + " Count : " + employee.getCount());
+    }
+    // for (Map.Entry<String, Integer> entry : reports.entrySet()) {
+    //   System.out.println("Department Name : " + entry.getKey() + " | Count : " + entry.getValue());
+    // }
+  }
+
   private void listEmployeeByManager() {
     System.out.println("Enter the manager ID : ");
     int managerId = input.nextInt();
-    Employee[] employees = Employee.findByManager(managerId);
-    if (employees.length == 0) {
+    List<Employee> employees = Employee.findByManager(managerId);
+    if (employees.size() == 0) {
       System.out.println("No such manager exists");
     } else {
       for (Employee e : employees) {
@@ -163,8 +194,8 @@ public class CliMain {
   private void listLeaveHistory() {
     System.out.println("Enter the employee ID");
     int empId = input.nextInt();
-    LeaveDetails[] leaveDetails = LeaveDetails.leaveHistory(empId);
-    if (leaveDetails == null) {
+    List<LeaveDetails> leaveDetails = LeaveDetails.leaveHistory(empId);
+    if (leaveDetails.size() == 0) {
       System.out.println("Sorry, No records found for this emp id");
     } else {
       for (LeaveDetails ld : leaveDetails) {
@@ -296,9 +327,9 @@ public class CliMain {
 
     System.out.println("Enter the leave Comment : ");
     String leaveComment = option.next();
-    LeaveDetails.leaveApply(empId, parsedStartDate, parsedEndDate, leaveType, leaveReason, leaveComment);
     System.out.println("--------------------------");
-    System.out.println("LEAVE APPLIED SUCCESSFULLY");
+    System.out.println(LeaveDetails.leaveApply(empId, parsedStartDate, parsedEndDate,
+          leaveType, leaveReason, leaveComment));
     System.out.println("--------------------------");
     // System.exit(0);
     Runtime.getRuntime().halt(0);

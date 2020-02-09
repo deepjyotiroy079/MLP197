@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import com.hexaware.MLP197.persistence.DbConnection;
 import com.hexaware.MLP197.persistence.EmployeeDAO;
+// import com.hexaware.MLP197.model.EmployeeReport;
 
 /**
  * Employee class to store employee personal details.
@@ -273,9 +274,17 @@ public class Employee {
    * @param argsManagerId the manager id
    * @return the list of employees working under given manager
    */
-  public static Employee[] findByManager(final int argsManagerId) {
-    final List<Employee> es = dao().findEmployeeViaManager(argsManagerId);
-    return es.toArray(new Employee[es.size()]);
+  public static List<Employee> findByManager(final int argsManagerId) {
+    return dao().findEmployeeViaManager(argsManagerId);
   }
-
+  /**
+   * function to return the mapping of department and employee count.
+   * @return the mapping of employee and department
+   */
+  public static List<EmployeeReport> getEmployeeDetails() {
+    // return dao().getEmployeeReport();
+    return  dao().getEmployeeReport();
+    // System.out.println(rpt.size());
+    // return rpt;
+  }
 }

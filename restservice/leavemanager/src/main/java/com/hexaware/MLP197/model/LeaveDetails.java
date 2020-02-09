@@ -1,6 +1,7 @@
 package com.hexaware.MLP197.model;
 
 import java.util.Date;
+//import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +34,8 @@ public class LeaveDetails {
     /**
      * No argument constructor.
      */
-  public LeaveDetails() {
+  public LeaveDetails()       {
+
   }
 
     /**
@@ -254,23 +256,29 @@ public class LeaveDetails {
     /**
      * @param leaveId to set leave id.
      * @param status to set status of leave.
+     * @return message.
      */
-  public static void approveById(final int leaveId, final String status) {
+  public static String approveById(final int leaveId, final String status) {
     dao().approve(leaveId, status);
+    return "Leave Approved";
   }
   /**
    * @param leaveId to set leaveid.
    * @param status to set status of leave.
    * @param leaveComment to set leave comment.
+   * @return message.
    */
-  public static void denyById(final int leaveId, final String status, final String leaveComment) {
+  public static String denyById(final int leaveId, final String status, final String leaveComment) {
     dao().deny(leaveId, status, leaveComment);
+    return "Leave Denied";
   }
   /**
    * @param empId to set empid.
+   * @return message.
    */
-  public static void reducingLeaveBalance(final int empId) {
+  public static String reducingLeaveBalance(final int empId) {
     dao().reduce(empId);
+    return "Leave Balance reduced";
   }
   @Override
   public final String toString() {
@@ -294,8 +302,9 @@ public class LeaveDetails {
      * @param argLeaveType to set the arg leave type.
      * @param argLeaveReason to set the arg leave reason.
      * @param argLeaveComment to set the arg leave comment.
+     * @return success message
      */
-  public static void leaveApply(final int argEmpId, final Date argLeaveStartDate, final Date argLeaveEndDate,
+  public static String leaveApply(final int argEmpId, final Date argLeaveStartDate, final Date argLeaveEndDate,
       final String argLeaveType, final String argLeaveReason, final String argLeaveComment) {
     if (argLeaveStartDate.compareTo(argLeaveEndDate) > 0) {
       System.out.println("Leave End Date should be greater than equal to Leave Start Date!");
@@ -306,13 +315,13 @@ public class LeaveDetails {
       Runtime.getRuntime().halt(0);
     }
     dao().applyLeaveDAO(argEmpId, argLeaveStartDate, argLeaveEndDate, argLeaveType, argLeaveReason, argLeaveComment);
+    return "LEAVE APPLIED SUCCESSFULLY";
   }
     /**
      * @param argEmpId to set arg emp id.
      * @return empid.
      */
-  public static LeaveDetails[] leaveHistory(final int argEmpId) {
-    final List<LeaveDetails> es = dao().getLeaveHistory(argEmpId);
-    return es.toArray(new LeaveDetails[es.size()]);
+  public static List<LeaveDetails> leaveHistory(final int argEmpId) {
+    return dao().getLeaveHistory(argEmpId);
   }
 }

@@ -1,14 +1,15 @@
 package com.hexaware.MLP197.persistence;
 
+import java.util.Date;
+import java.util.List;
+
 import com.hexaware.MLP197.model.Employee;
+import com.hexaware.MLP197.model.EmployeeReport;
 
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * The DAO class for employee.
@@ -73,6 +74,13 @@ public interface EmployeeDAO {
   @SqlQuery("SELECT * FROM EMPLOYEES WHERE EMP_MANAGER_ID = :managerId")
   @Mapper(EmployeeMapper.class)
   List<Employee> findEmployeeViaManager(@Bind("managerId") int argsManagerId);
+  /**
+   * returns mapping of department with the employee count.
+   * @return the mapping of department and the employee count
+   */
+  @SqlQuery("SELECT EMP_DEPARTMENT, COUNT(EMP_ID) AS NUMBER_OF_EMPLOYEES FROM EMPLOYEES GROUP BY EMP_DEPARTMENT")
+  @Mapper(EmployeeReportMapper.class)
+  List<EmployeeReport> getEmployeeReport();
   /**
    * close with no args is used to close the connection.
    */
