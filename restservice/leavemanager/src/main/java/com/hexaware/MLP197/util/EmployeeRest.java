@@ -1,5 +1,6 @@
 package com.hexaware.MLP197.util;
 
+
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
@@ -36,10 +37,27 @@ public class EmployeeRest {
   @Path("{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public final Employee employeeListById(@PathParam("id") final int id) {
+    System.out.println("Employee details by id");
     final Employee empl = Employee.listById(id);
     if (empl == null) {
       throw new NotFoundException("No such Employee ID: " + id);
     }
     return empl;
+  }
+  /**
+   * Returns manager details of specific Employee.
+   * @param empId the employee id
+   * @return the manager details
+   */
+  @GET
+  @Path("/managerdetails/{empId}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public final Employee viewManagerDetails(@PathParam("empId") final int empId) {
+    System.out.println("Manager Details of given employee : ");
+    final Employee manager = Employee.findManager(empId);
+    if (manager == null) {
+      throw new NotFoundException("No manager exists of this employee ");
+    }
+    return manager;
   }
 }

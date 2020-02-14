@@ -287,4 +287,11 @@ public class Employee {
     // System.out.println(rpt.size());
     // return rpt;
   }
+  /**
+   * finding employees having maximum leave balance.
+   * @return the list of employees having maximum leave balance
+   */
+  public static List<Employee> employeesHavingMaximumLeaveBalance() {
+    return dao().maximumLeaveBalance();
+  }
 }

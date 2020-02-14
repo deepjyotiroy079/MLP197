@@ -208,4 +208,27 @@ public class EmployeeTest {
     List<EmployeeReport> reports = Employee.getEmployeeDetails();
     assertEquals(reports, employeeReports);
   }
+  /**
+   * test for getting maximum leave balance of employees.
+   * @param dao the database access object
+   */
+  @Test
+  public final void testMaximumLeaveBalance(@Mocked final EmployeeDAO dao) {
+    final List<Employee> employees = new ArrayList<Employee>();
+    new Expectations() {
+      {
+        employees.add(new Employee(2, "Deepjyoti Roy", "deepjyotiroy079@gmail.com", 9999888823L, "2020-02-04",
+            "Trainee", "Hexavarsity", 14, 1));
+        dao.maximumLeaveBalance(); result = employees;
+      }
+    };
+    new MockUp<Employee>() {
+      @Mock
+      EmployeeDAO dao() {
+        return dao;
+      }
+    };
+    List<Employee> e = Employee.employeesHavingMaximumLeaveBalance();
+    assertEquals(e, employees);
+  }
 }
