@@ -288,10 +288,11 @@ public class Employee {
     // return rpt;
   }
   /**
-   * finding employees having maximum leave balance.
-   * @return the list of employees having maximum leave balance
+   * returning leaveBalance.
+   * @param argEmpId employee id
+   * @return leaveBalance
    */
-  public static List<Employee> employeesHavingMaximumLeaveBalance() {
-    return dao().maximumLeaveBalance();
+  public static int findingEmpLeaveBalance(final int argEmpId) {
+    return dao().findLeaveBalance(argEmpId);
   }
 }

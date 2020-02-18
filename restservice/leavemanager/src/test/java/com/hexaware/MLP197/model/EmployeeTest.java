@@ -2,27 +2,26 @@ package com.hexaware.MLP197.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 
 import java.text.ParseException;
-// import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.hexaware.MLP197.persistence.EmployeeDAO;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import mockit.Expectations;
 import mockit.Mock;
 import mockit.MockUp;
 
 import mockit.Mocked;
+import mockit.integration.junit4.JMockit;
 
 /**
  * Test class for Employee.
  */
+@RunWith(JMockit.class)
 public class EmployeeTest {
 
   /**
@@ -105,6 +104,8 @@ public class EmployeeTest {
     assertEquals(10, emp.getEmpManagerID());
     final Employee emp2 = null;
     assertFalse(emp.equals(emp2));
+    final LeaveDetails ld = null;
+    assertFalse(emp.equals(ld));
   }
   /**
    * Tests the hashCode method of the employee class.
@@ -116,48 +117,6 @@ public class EmployeeTest {
     assertEquals(emp1.hashCode(), new Employee(2, "Deepjyoti Roy",
           "deepjyotiroy079@gmail.com", 9999888823L, "2020-02-04",
           "Trainee", "Hexavarsity", 14, 1).hashCode());
-  }
-  /**
-   * testing the equals method.
-   */
-  @Test
-  public final void testEquals() {
-    Employee emp1 = new Employee(2, "rama", "rama123@gmail.com", 9999888863L, "2020-02-04",
-          "Trainee", "Hexavarsity", 14, 1);
-    Employee emp2 = new Employee(2, "rama", "rama123@gmail.com", 9999888863L, "2020-02-04",
-          "Trainee", "Hexavarsity", 14, 1);
-    Employee emp3 = new Employee(4, "ram", "ram123@gmail.com", 9999898863L, "2020-02-04",
-          "Trainee", "Hexavarsity", 14, 1);
-    assertEquals(emp1, emp2);
-    assertNotEquals(emp2, emp3);
-    assertNotEquals(emp1, emp3);
-  }
-  /**
-   * testing listing all th eemployees under particular manager.
-   * @param dao the dao object
-   */
-  @Test
-  public final void testListAllEmployeesUnderParticularManager(@Mocked final EmployeeDAO dao) {
-    final List<Employee> employees = new ArrayList<Employee>();
-    new Expectations() {
-      {
-        employees.add(new Employee(2, "amruta", "amruta@gmail.com", 1234567891L,
-            "2018-02-07", "Trainee", "Testing", 10, 1));
-        employees.add(new Employee(3, "alex", "alex@gmail.com", 1234566891L,
-            "2018-02-07", "Trainee", "Testing", 10, 1));
-        dao.findEmployeeViaManager(1); result = employees;
-      }
-    };
-
-    new MockUp<Employee>() {
-      @Mock
-      EmployeeDAO dao() {
-        return dao;
-      }
-    };
-    List<Employee> emps = Employee.findByManager(1);
-    assertEquals(2, emps.size());
-    assertEquals(emps, employees);
   }
   /**
    * Tests that a fetch of a specific employee works correctly.
@@ -183,52 +142,5 @@ public class EmployeeTest {
 
     Employee e = Employee.listById(2);
     assertEquals(emp1, e);
-  }
-  /**
-   * testing the employee report functionality.
-   * @param dao the database access object
-   */
-  @Test
-  public final void testEmployeeReportFunctionality(@Mocked final EmployeeDAO dao) {
-    final List<EmployeeReport> employeeReports = new ArrayList<EmployeeReport>();
-    new Expectations() {
-      {
-        employeeReports.add(new EmployeeReport("DEVELOPMENT", 25));
-        employeeReports.add(new EmployeeReport("TESTING", 12));
-        dao.getEmployeeReport();
-        result = employeeReports;
-      }
-    };
-    new MockUp<Employee>() {
-      @Mock
-      EmployeeDAO dao() {
-        return dao;
-      }
-    };
-    List<EmployeeReport> reports = Employee.getEmployeeDetails();
-    assertEquals(reports, employeeReports);
-  }
-  /**
-   * test for getting maximum leave balance of employees.
-   * @param dao the database access object
-   */
-  @Test
-  public final void testMaximumLeaveBalance(@Mocked final EmployeeDAO dao) {
-    final List<Employee> employees = new ArrayList<Employee>();
-    new Expectations() {
-      {
-        employees.add(new Employee(2, "Deepjyoti Roy", "deepjyotiroy079@gmail.com", 9999888823L, "2020-02-04",
-            "Trainee", "Hexavarsity", 14, 1));
-        dao.maximumLeaveBalance(); result = employees;
-      }
-    };
-    new MockUp<Employee>() {
-      @Mock
-      EmployeeDAO dao() {
-        return dao;
-      }
-    };
-    List<Employee> e = Employee.employeesHavingMaximumLeaveBalance();
-    assertEquals(e, employees);
   }
 }

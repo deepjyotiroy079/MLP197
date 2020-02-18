@@ -13,6 +13,9 @@ import java.text.ParseException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import mockit.integration.junit4.JMockit;
 
 // import mockit.Expectations;
 // import mockit.Mock;
@@ -23,6 +26,7 @@ import org.junit.Test;
 /**
  * Test class for Employee.
  */
+@RunWith(JMockit.class)
 public class EmployeeReportTest {
 
   /**

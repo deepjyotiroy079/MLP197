@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.hexaware.MLP197.model.Employee;
-import com.hexaware.MLP197.model.LeaveDetails;
 import com.hexaware.MLP197.model.EmployeeReport;
+import com.hexaware.MLP197.model.LeaveDetails;
 
 /**
  * Class CliMain provides the command line interface to the leavemanagement
@@ -31,10 +31,9 @@ public class CliMain {
     System.out.println("6. Applying for leave");
     System.out.println("7. Listing Employees by Manager");
     System.out.println("8. Employee Reports");
-    System.out.println("9. Employees Having Maximum Leave.");
     // System.out.println("9. Leave Details Reports");
     // System.out.println("7. View Employees by Department");
-    System.out.println("10. Exit");
+    System.out.println("9. Exit");
     System.out.println("Enter your choice:");
     int menuOption = option.nextInt();
     mainMenuDetails(menuOption);
@@ -66,16 +65,13 @@ public class CliMain {
       case 8:
         employeeReport();
         break;
-      case 9:
-        employeesHavingMaximumLeaveBalance();
-        break;
       // case 9:
       //   leaveDetailsReport();
       //   break;
       // case 7:
       //   listEmployeesByDepartment();
       //   break;
-      case 10:
+      case 9:
       // halt since normal exit throws a stacktrace due to jdbc threads not responding
         Runtime.getRuntime().halt(0);
       default:
@@ -83,24 +79,6 @@ public class CliMain {
     }
     mainMenu();
   }
-  /**
-   * function to return list of employees having max leave balance.
-   */
-  private void employeesHavingMaximumLeaveBalance() {
-    System.out.println("Following Employees have maximum leave balance : ");
-    System.out.println("-------------------------------------------------");
-    List<Employee> employees = Employee.employeesHavingMaximumLeaveBalance();
-    for (Employee e : employees) {
-      System.out.println("Employee Full Name : " + e.getEmpFullName());
-      System.out.println("Employee Email : " + e.getEmail());
-      System.out.println("Employee Mobile : " + e.getEmpMobile());
-      System.out.println("Date of Joining : " + e.getEmpDateOfJoining());
-      System.out.println("Employee Designation : " + e.getEmpDesignation());
-      System.out.println("Employee Department : " + e.getEmpDepartment());
-      System.out.println("");
-    }
-  }
-
   // private void leaveDetailsReport() {
   // }
   private void employeeReport() {
@@ -290,11 +268,17 @@ public class CliMain {
     System.out.println("1 Approve 2 denied");
     String status = "";
     int choice = input.nextInt();
+    int totalNoOfDays = LeaveDetails.totalLeaves(empId);
+    int leaveBalance = Employee.findingEmpLeaveBalance(empId);
     switch (choice) {
       case 1:
-        status = "APPROVED";
-        LeaveDetails.approveById(leaveId, status);
-        LeaveDetails.reducingLeaveBalance(empId);
+        if (leaveBalance > totalNoOfDays) {
+          status = "APPROVED";
+          LeaveDetails.approveById(leaveId, status);
+          LeaveDetails.reducingLeaveBalance(leaveId, empId);
+        } else {
+          status = "LEAVE NOT APPLICABLE";
+        }
         break;
       case 2:
         status = "DENIED";
@@ -343,7 +327,7 @@ public class CliMain {
         // System.exit(0);
         Runtime.getRuntime().halt(0);
     }
-
+    LeaveDetails.totalLeaves(empId);
     System.out.println("Enter the reason for leave : ");
     String leaveReason = option.next();
 

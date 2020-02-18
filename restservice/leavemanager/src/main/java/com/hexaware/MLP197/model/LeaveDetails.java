@@ -24,6 +24,7 @@ public class LeaveDetails {
   private int leaveId;
   private Date leaveStartDate;
   private Date leaveEndDate;
+  private int leaveNoOfDays;
   private String leaveType;
   private String leaveReason;
   private String leaveStatus;
@@ -40,24 +41,27 @@ public class LeaveDetails {
 
     /**
      * constructer to initialize values.
-     * @param argLeaveId        to initialize leave id.
-     * @param argLeaveStartDate to initialize leave start date.
-     * @param argLeaveEndDate   to initialize leave end date.
-     * @param argLeaveType      to initialize leave type.
-     * @param argLeaveReason    to initialize leave reason.
-     * @param argLeaveStatus    to initialize leave status.
-     * @param argLeaveAppliedOn to initialize leave applied on.
-     * @param argLeaveComment   to initialize leave comment.
-     * @param argEmpId          to initialize emp id.
+     * @param argLeaveId to initialize leaveId
+     * @param argLeaveStartDate to initialize start date
+     * @param argLeaveEndDate to initialize end date
+     * @param argsLeaveNoOfDays to initialize no of days
+     * @param argLeaveType to initialize leave type
+     * @param argLeaveReason to initialize leave reason
+     * @param argLeaveStatus to initialize leave status
+     * @param argLeaveAppliedOn to initialize leave applied on
+     * @param argLeaveComment to initialize leave comment
+     * @param argEmpId to initialize empId
      */
   public LeaveDetails(final int argLeaveId, final Date argLeaveStartDate, final Date argLeaveEndDate,
-        final String argLeaveType, final String argLeaveReason, final String argLeaveStatus,
-         final Date argLeaveAppliedOn, final String argLeaveComment, final int argEmpId) {
+         final int argsLeaveNoOfDays, final String argLeaveType, final String argLeaveReason,
+         final String argLeaveStatus, final Date argLeaveAppliedOn, final String argLeaveComment,
+         final int argEmpId) {
     this.leaveId = argLeaveId;
     Date startDate = new Date(argLeaveStartDate.getTime());
     this.leaveStartDate = startDate;
     Date endDate = new Date(argLeaveEndDate.getTime());
     this.leaveEndDate = endDate;
+    this.leaveNoOfDays = argsLeaveNoOfDays;
     this.leaveType = argLeaveType;
     this.leaveReason = argLeaveReason;
     this.leaveStatus = argLeaveStatus;
@@ -66,6 +70,9 @@ public class LeaveDetails {
     this.leaveComment = argLeaveComment;
     this.empId = argEmpId;
   }
+
+
+
 
   @Override
     public final boolean equals(final Object obj) {
@@ -77,10 +84,10 @@ public class LeaveDetails {
     }
     final LeaveDetails emp = (LeaveDetails) obj;
     if (Objects.equals(leaveId, emp.leaveId) && Objects.equals(leaveStartDate, emp.leaveStartDate)
-            && Objects.equals(leaveEndDate, emp.leaveEndDate) && Objects.equals(leaveType, emp.leaveType)
-            && Objects.equals(leaveStatus, emp.leaveStatus) && Objects.equals(leaveReason, emp.leaveReason)
-            && Objects.equals(empId, emp.empId) && Objects.equals(leaveComment, emp.leaveComment)
-            && Objects.equals(leaveAppliedOn, emp.leaveAppliedOn)) {
+            && Objects.equals(leaveEndDate, emp.leaveEndDate)  && Objects.equals(leaveNoOfDays, emp.leaveNoOfDays)
+            && Objects.equals(leaveType, emp.leaveType) && Objects.equals(leaveStatus, emp.leaveStatus)
+            && Objects.equals(leaveReason, emp.leaveReason) && Objects.equals(empId, emp.empId)
+            && Objects.equals(leaveComment, emp.leaveComment) && Objects.equals(leaveAppliedOn, emp.leaveAppliedOn)) {
       return true;
     }
     return false;
@@ -88,8 +95,8 @@ public class LeaveDetails {
 
   @Override
   public final int hashCode() {
-    return Objects.hash(leaveId, leaveStartDate, leaveEndDate, leaveType, leaveStatus, leaveReason, empId,
-    leaveComment, leaveAppliedOn);
+    return Objects.hash(leaveId, leaveStartDate, leaveEndDate, leaveNoOfDays,
+                        leaveType, leaveStatus, leaveReason, empId, leaveComment, leaveAppliedOn);
   }
 
     /**
@@ -142,6 +149,20 @@ public class LeaveDetails {
   public final void setLeaveEndDate(final Date argLeaveEndDate) {
     Date endDate = new Date(argLeaveEndDate.getTime());
     this.leaveEndDate = endDate;
+  }
+  /**
+   * getting the noofdays.
+   * @return leaveNoOfDays.
+   */
+  public final int getLeaveNoOfDays() {
+    return leaveNoOfDays;
+  }
+  /**
+   * setting the leave no of days.
+   * @param argLeaveNoOfDays total no of leaves
+   */
+  public final void setLeaveNoOfDays(final int argLeaveNoOfDays) {
+    this.leaveNoOfDays = argLeaveNoOfDays;
   }
 
     /**
@@ -273,19 +294,28 @@ public class LeaveDetails {
     return "Leave Denied";
   }
   /**
+   * @param leaveId to set leaveId.
    * @param empId to set empid.
    * @return message.
    */
-  public static String reducingLeaveBalance(final int empId) {
-    dao().reduce(empId);
+  public static String reducingLeaveBalance(final int leaveId, final int empId) {
+    dao().reduce(leaveId, empId);
     return "Leave Balance reduced";
   }
+  // /**
+  //  * @param empId to set empId.
+  //  * @return message.
+  //  */
+  // public static String reducingEarnedLeave(final int empId) {
+  //   dao().exhaustingEarnedLeave(empId);
+  //   return "Leave Balance reduced";
+  // }
   @Override
   public final String toString() {
     return "LeaveDetails [empId=" + empId + ", leaveAppliedOn=" + leaveAppliedOn + ", leaveComment=" + leaveComment
             + ", leaveEndDate=" + leaveEndDate + ", leaveId=" + leaveId + ", leaveReason=" + leaveReason
                 + ", leaveStartDate=" + leaveStartDate + ", leaveStatus=" + leaveStatus + ", leaveType=" + leaveType
-                + "]";
+                + ", leaveNoOfDays=" + leaveNoOfDays + "]";
   }
     /**
      * @return LeaveDetailsDAO.
@@ -317,11 +347,19 @@ public class LeaveDetails {
     dao().applyLeaveDAO(argEmpId, argLeaveStartDate, argLeaveEndDate, argLeaveType, argLeaveReason, argLeaveComment);
     return "LEAVE APPLIED SUCCESSFULLY";
   }
-    /**
-     * @param argEmpId to set arg emp id.
-     * @return empid.
-     */
+  /**
+   * @param argEmpId to set arg emp id.
+   * @return empid.
+   */
   public static List<LeaveDetails> leaveHistory(final int argEmpId) {
     return dao().getLeaveHistory(argEmpId);
+  }
+  /**
+   * getting total leaves.
+   * @param argEmpId empId
+   * @return total leaves
+   */
+  public static int totalLeaves(final int argEmpId) {
+    return dao().findTotalLeaves(argEmpId);
   }
 }

@@ -1,0 +1,1 @@
+cp ./target/MLP197-0.0.1-SNAPSHOT.war /c/apache-tomcat-8.5.24/webapps/MLP197.war

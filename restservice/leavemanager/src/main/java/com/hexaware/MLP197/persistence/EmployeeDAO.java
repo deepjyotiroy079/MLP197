@@ -82,12 +82,12 @@ public interface EmployeeDAO {
   @Mapper(EmployeeReportMapper.class)
   List<EmployeeReport> getEmployeeReport();
   /**
-   * returns the list of employees having maximum number of leaves.
-   * @return the list of employees
+   * returns employee leaveBalance.
+   * @param empId the employeeId
+   * @return leaveBalance
    */
-  @SqlQuery("SELECT * FROM EMPLOYEES WHERE EMP_LEAVE_BALANCE = (SELECT MAX(EMP_LEAVE_BALANCE) FROM EMPLOYEES)")
-  @Mapper(EmployeeMapper.class)
-  List<Employee> maximumLeaveBalance();
+  @SqlQuery("SELECT EMP_LEAVE_BALANCE FROM EMPLOYEES WHERE EMP_ID =:empId")
+  int findLeaveBalance(@Bind("empId")int empId);
   /**
    * close with no args is used to close the connection.
    */

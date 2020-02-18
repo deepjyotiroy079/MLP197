@@ -63,15 +63,30 @@ public interface LeaveDetailsDAO {
             @Bind("status") String status,
             @Bind("leaveComment") String leaveComment);
   /**
+   * getting total number of leaves.
+   * @param empId empId
+   * @return total leaves taken
+   */
+  @SqlUpdate("UPDATE LEAVE_DETAILS SET LEAVE_NUMBER_OF_DAYS = (LEAVE_END_DATE - LEAVE_START_DATE) WHERE EMP_ID =:empId")
+  @Mapper(LeaveDetailsMapper.class)
+  int findTotalLeaves(@Bind("empId")int empId);
+  /**
    * reducing the leave balance in the employee table after approval.
-   * @param empID the employee id
+   * @param leaveId the leave id
+   * @param empId the employee id
    */
   @SqlUpdate("UPDATE EMPLOYEES SET EMP_LEAVE_BALANCE = "
-            + "EMP_LEAVE_BALANCE - (SELECT (LEAVE_END_DATE "
-            + "- LEAVE_START_DATE) "
-            + "FROM LEAVE_DETAILS WHERE EMP_ID =:empId ORDER BY "
-            + "LEAVE_APPLIED_ON DESC LIMIT 1) WHERE EMP_ID =:empId")
-    void reduce(@Bind("empId")int empID);
+              + "EMP_LEAVE_BALANCE - (SELECT LEAVE_NUMBER_OF_DAYS FROM "
+              + "LEAVE_DETAILS WHERE LEAVE_ID =:leaveId) WHERE EMP_ID =:empId")
+  void reduce(@Bind("leaveId")int leaveId, @Bind("empId")int empId);
+  // /**
+  //  * exhausting the leave balance.
+  //  * @param empId leaveId
+  //  */
+  // @SqlUpdate("UPDATE EMPLOYEES SET EMP_LEAVE_BALANCE = 0 "
+  //             + "WHERE EMP_ID =:empId")
+  // @Mapper(LeaveDetailsMapper.class)
+  // void exhaustingEarnedLeave(@Bind("empId")int empId);
    /**
     * inserting leave details into leave tables.
     * @param empId the leave id
