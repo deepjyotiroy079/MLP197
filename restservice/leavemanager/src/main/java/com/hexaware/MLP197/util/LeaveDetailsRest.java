@@ -1,5 +1,7 @@
 package com.hexaware.MLP197.util;
 
+// import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 // import java.util.List;
@@ -42,8 +44,7 @@ public class LeaveDetailsRest {
   @Path("/deny")
   @Consumes(MediaType.APPLICATION_JSON)
   public final String denyById(final LeaveDetails leaveDetails) {
-    return LeaveDetails.denyById(leaveDetails.getLeaveId(),
-           leaveDetails.getLeaveStatus(), leaveDetails.getLeaveComment());
+    return LeaveDetails.denyById(leaveDetails.getLeaveId(), leaveDetails.getLeaveComment());
   }
    /**
     * applying leave.
@@ -57,9 +58,9 @@ public class LeaveDetailsRest {
     return LeaveDetails.leaveApply(leaveDetails.getEmpId(),
                                    leaveDetails.getLeaveStartDate(),
                                    leaveDetails.getLeaveEndDate(),
+                                   leaveDetails.getLeaveNoOfDays(),
                                    leaveDetails.getLeaveType().toString(),
-                                   leaveDetails.getLeaveReason(),
-                                   leaveDetails.getLeaveComment());
+                                   leaveDetails.getLeaveReason());
   }
   /**
    * @param leaveDetails leaveDetails object.
@@ -69,6 +70,16 @@ public class LeaveDetailsRest {
   @Path("/approveLeave")
   @Consumes(MediaType.APPLICATION_JSON)
   public final String approveLeave(final LeaveDetails leaveDetails) {
-    return LeaveDetails.approveById(leaveDetails.getLeaveId(), leaveDetails.getLeaveStatus());
+    int ld = leaveDetails.getLeaveNoOfDays();
+    Date d1 = leaveDetails.getLeaveEndDate();
+    Date d2 = leaveDetails.getLeaveStartDate();
+    long day = leaveDetails.daysBetween(d1, d2);
+    if (ld == day) {
+      LeaveDetails.reducingLeaveBalance(leaveDetails.getLeaveId(), leaveDetails.getEmpId());
+      return LeaveDetails.approveById(leaveDetails.getLeaveId());
+    } else {
+      return "enter correct leave no of days";
+    }
+
   }
 }

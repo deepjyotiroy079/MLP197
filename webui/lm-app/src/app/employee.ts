@@ -1,10 +1,12 @@
 export class Employee {
     empId: number;
-    name: String;
+    empFullName: String;
     email: String;
-    phoneNumber: number;
-    mgrId: number;
-    constructor(id: number) {
-      this.empId = id;
-    }
+    empMobile: number;
+    empDateOfJoining: number;
+    empDesignation: String;
+    empDepartment: String;
+    empLeaveBalance:number;
+    empManagerId: number;
+    
 }

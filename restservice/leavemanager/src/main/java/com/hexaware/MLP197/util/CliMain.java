@@ -266,26 +266,21 @@ public class CliMain {
     System.out.println("Enter the employee Id");
     int empId = input.nextInt();
     System.out.println("1 Approve 2 denied");
-    String status = "";
     int choice = input.nextInt();
     int totalNoOfDays = LeaveDetails.totalLeaves(empId);
     int leaveBalance = Employee.findingEmpLeaveBalance(empId);
     switch (choice) {
       case 1:
         if (leaveBalance > totalNoOfDays) {
-          status = "APPROVED";
-          LeaveDetails.approveById(leaveId, status);
+          LeaveDetails.approveById(leaveId);
           LeaveDetails.reducingLeaveBalance(leaveId, empId);
-        } else {
-          status = "LEAVE NOT APPLICABLE";
         }
         break;
       case 2:
-        status = "DENIED";
         input.nextLine();
         System.out.println("Enter comments");
         String leaveComment = input.nextLine();
-        LeaveDetails.denyById(leaveId, status, leaveComment);
+        LeaveDetails.denyById(leaveId, leaveComment);
         break;
       default:
         System.out.println("Invalid Choice");
@@ -305,7 +300,12 @@ public class CliMain {
 
     System.out.println("Enter the end date : ");
     String endDate = input.next();
+
+    System.out.println("Enter leave number of days : ");
+    int leaveNumberOfDays = input.nextInt();
     Date parsedEndDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
+    System.out.println("Enter the leave number of days : ");
+    int leaveNumberOfDays = input.nextInt();
     System.out.println("Select leave type : ");
     System.out.println("1. Earned Leave");
     System.out.println("2. Maternity Leave");
@@ -331,11 +331,9 @@ public class CliMain {
     System.out.println("Enter the reason for leave : ");
     String leaveReason = option.next();
 
-    System.out.println("Enter the leave Comment : ");
-    String leaveComment = option.next();
     System.out.println("--------------------------");
-    System.out.println(LeaveDetails.leaveApply(empId, parsedStartDate, parsedEndDate,
-          leaveType, leaveReason, leaveComment));
+    System.out.println(LeaveDetails.leaveApply(empId, parsedStartDate, parsedEndDate, leaveNumberOfDays,
+          leaveType, leaveReason));
     System.out.println("--------------------------");
     // System.exit(0);
     Runtime.getRuntime().halt(0);

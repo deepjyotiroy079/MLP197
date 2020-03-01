@@ -46,21 +46,18 @@ public interface LeaveDetailsDAO {
   /**
    * approving the leave details of the employee.
    * @param leaveId the leave id
-   * @param status the leave status
    */
-  @SqlUpdate("UPDATE LEAVE_DETAILS SET LEAVE_STATUS=:status WHERE LEAVE_ID=:leaveId")
+  @SqlUpdate("UPDATE LEAVE_DETAILS SET LEAVE_STATUS='APPROVED' WHERE LEAVE_ID=:leaveId")
   @Mapper(LeaveDetailsMapper.class)
-   void approve(@Bind("leaveId")int leaveId, @Bind("status") String status);
+   void approve(@Bind("leaveId")int leaveId);
   /**
    * denying the leave details of given employee.
    * @param leaveId the leave id
-   * @param status the leave status
    * @param leaveComment the leave comment
    */
-  @SqlUpdate("UPDATE LEAVE_DETAILS SET LEAVE_STATUS=:status, LEAVE_COMMENT=:leaveComment WHERE LEAVE_ID=:leaveId")
+  @SqlUpdate("UPDATE LEAVE_DETAILS SET LEAVE_STATUS='DENIED', LEAVE_COMMENT=:leaveComment WHERE LEAVE_ID=:leaveId")
   @Mapper(LeaveDetailsMapper.class)
   void deny(@Bind("leaveId")int leaveId,
-            @Bind("status") String status,
             @Bind("leaveComment") String leaveComment);
   /**
    * getting total number of leaves.
@@ -75,10 +72,11 @@ public interface LeaveDetailsDAO {
    * @param leaveId the leave id
    * @param empId the employee id
    */
-  @SqlUpdate("UPDATE EMPLOYEES SET EMP_LEAVE_BALANCE = "
-              + "EMP_LEAVE_BALANCE - (SELECT LEAVE_NUMBER_OF_DAYS FROM "
-              + "LEAVE_DETAILS WHERE LEAVE_ID =:leaveId) WHERE EMP_ID =:empId")
+  @SqlUpdate("UPDATE EMPLOYEES SET EMP_LEAVE_BALANCE = EMP_LEAVE_BALANCE - (SELECT LEAVE_NUMBER_OF_DAYS"
+      + " FROM LEAVE_DETAILS WHERE LEAVE_ID =:leaveId)"
+      + " WHERE EMP_ID = (SELECT EMP_ID FROM LEAVE_DETAILS WHERE LEAVE_ID=:leaveId)")
   void reduce(@Bind("leaveId")int leaveId, @Bind("empId")int empId);
+
   // /**
   //  * exhausting the leave balance.
   //  * @param empId leaveId
@@ -92,17 +90,19 @@ public interface LeaveDetailsDAO {
     * @param empId the leave id
     * @param leaveStartDate the leave start date
     * @param leaveEndDate the leave end date
+    * @param leaveNumberOfDays the leave number of days
     * @param leaveType the leave type
     * @param leaveReason the leave reason
-    * @param leaveComment the leave comment
     */
   @SqlUpdate("INSERT INTO LEAVE_DETAILS(LEAVE_START_DATE, "
-            + "LEAVE_END_DATE, LEAVE_TYPE, LEAVE_REASON, EMP_ID, LEAVE_COMMENT) "
-            + "VALUES(:leaveStartDate, :leaveEndDate, :leaveType, :leaveReason, :empId, :leaveComment)")
+            + "LEAVE_END_DATE, LEAVE_NUMBER_OF_DAYS, LEAVE_TYPE, LEAVE_REASON, EMP_ID) "
+            + "VALUES(:leaveStartDate, :leaveEndDate, :leaveNumberOfDays,:leaveType, "
+            + ":leaveReason, :empId)")
   @Mapper(LeaveDetailsMapper.class)
     void applyLeaveDAO(@Bind("empId") int empId, @Bind("leaveStartDate") Date leaveStartDate,
-            @Bind("leaveEndDate") Date leaveEndDate, @Bind("leaveType") String leaveType,
-            @Bind("leaveReason") String leaveReason, @Bind("leaveComment") String leaveComment);
+            @Bind("leaveEndDate") Date leaveEndDate, @Bind("leaveNumberOfDays") int leaveNumberOfDays,
+            @Bind("leaveType") String leaveType,
+            @Bind("leaveReason") String leaveReason);
    /**
     * getting all the leave details for given employee.
     * @param empId the employee id

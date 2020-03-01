@@ -60,8 +60,8 @@ public class EmployeeRestTest {
 	@Test
 	public void testFindManager() throws URISyntaxException {
 		Employee manager = given().accept(ContentType.JSON).when()
-		.get(CommonUtil.getURI("/api/employees/manager/1")).getBody().as(Employee.class);
-		assertEquals(new Employee(2, "MURUGAN", "murugan@hexaware.com", 9999888834L, "2009-01-01", "MANAGER", "HEXAVARSITY", 0, 0), manager);
+		.get(CommonUtil.getURI("/api/employees/manager/2")).getBody().as(Employee.class);
+		assertEquals(new Employee(1, "MURUGAN", "murugan@hexaware.com", 9999888834L, "2009-01-01", "MANAGER", "HEXAVARSITY", 12, 0), manager);
     
 	}
 }

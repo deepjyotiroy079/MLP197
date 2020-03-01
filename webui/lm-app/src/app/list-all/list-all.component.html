@@ -1,0 +1,55 @@
+<div class="container py-5" style="text-align:center">
+  <h1 class="display-4">
+    Welcome to {{title}}!
+  </h1>
+</div>
+<div class="container-fluid text-center">
+    <div class="alert alert-primary" role="alert">
+        <h3 class="display-4">Employees List</h3>
+    </div>
+    <table class="table table-hover table-borderless">
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Employee Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Date of Joining</th>
+                <th>Designation</th>
+                <th>Department</th>
+                <th>Manager Id</th>
+            </tr>
+        </thead>
+        <tbody class="employees">
+            <tr *ngFor="let employee of employees">
+                <td>
+                    <h5>{{employee.empId}}</h5>
+                </td>
+                <td>
+                    <h5>{{employee.empFullName}}</h5>
+                </td>
+                <td>
+                    <h5>{{employee.email}}</h5>
+                </td>
+                <td>
+                    <h5>{{employee.empMobile}}</h5>
+                </td>
+                <td>
+                    <h5>{{employee.empDateOfJoining}}</h5>
+                </td>
+                <td>
+                    <h5>{{employee.empDesignation}}</h5>
+                </td>
+                <td>
+                    <h5>{{employee.empDepartment}}</h5>
+                </td>
+                <td>
+                    <h5>{{employee.empManagerID}}</h5>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary">Login</button>
+                </td>                
+            </tr>
+        </tbody>
+    </table>
+</div>

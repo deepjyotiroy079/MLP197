@@ -1,0 +1,35 @@
+<div class="container-fluid text-center">
+  <div class="alert alert-success" role="alert">
+    <h3 class="display-4">Leave History</h3>
+  </div>
+  <table class="table table-hover table-borderless">
+    <thead>
+      <tr>
+        <th scope="col">Leave ID</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+        <th scope="col">Number of Days</th>
+        <th scope="col">Leave Type</th>
+        <th scope="col">Leave Reason</th>
+        <th scope="col">Leave Status</th>
+        <th scope="col">Applied On</th>
+        <th scope="col">Leave Comments</th>
+        <th scope="col">Employee Id</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let leaveDetails of leaveDetails">
+        <td><h5>{{ leaveDetails.leaveId }}</h5></td>
+        <td><h5>{{ leaveDetails.leaveStartDate | date}}</h5></td>
+        <td><h5>{{ leaveDetails.leaveEndDate | date}}</h5></td>
+        <td><h5>{{ leaveDetails.leaveNoOfDays }}</h5></td>
+        <td><h5>{{ leaveDetails.leaveType }}</h5></td>
+        <td><h5>{{ leaveDetails.leaveReason }}</h5></td>
+        <td><h5>{{ leaveDetails.leaveStatus }}</h5></td>
+        <td><h5>{{ leaveDetails.leaveAppliedOn | date }}</h5></td>
+        <td><h5>{{ leaveDetails.leaveComment }}</h5></td>
+        <td><h5>{{ leaveDetails.empId }}</h5></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

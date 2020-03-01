@@ -1,5 +1,7 @@
 package com.hexaware.MLP197.model;
 
+// import java.text.SimpleDateFormat;
+// import java.time.LocalDate;
 import java.util.Date;
 //import java.text.SimpleDateFormat;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.Objects;
 
 import com.hexaware.MLP197.persistence.DbConnection;
 import com.hexaware.MLP197.persistence.LeaveDetailsDAO;
+
 
 /**
  * LeaveDetails.
@@ -267,49 +270,6 @@ public class LeaveDetails {
     //     final DbConnection db = new DbConnection();
     //     return db.getConnect().onDemand(LeaveDetailsDAO.class);
     // }
-    /**
-     * @param empID to set empid.
-     * @return empid.
-     */
-  public static LeaveDetails listById(final int empID) {
-    return dao().find(empID);
-  }
-    /**
-     * @param leaveId to set leave id.
-     * @param status to set status of leave.
-     * @return message.
-     */
-  public static String approveById(final int leaveId, final String status) {
-    dao().approve(leaveId, status);
-    return "Leave Approved";
-  }
-  /**
-   * @param leaveId to set leaveid.
-   * @param status to set status of leave.
-   * @param leaveComment to set leave comment.
-   * @return message.
-   */
-  public static String denyById(final int leaveId, final String status, final String leaveComment) {
-    dao().deny(leaveId, status, leaveComment);
-    return "Leave Denied";
-  }
-  /**
-   * @param leaveId to set leaveId.
-   * @param empId to set empid.
-   * @return message.
-   */
-  public static String reducingLeaveBalance(final int leaveId, final int empId) {
-    dao().reduce(leaveId, empId);
-    return "Leave Balance reduced";
-  }
-  // /**
-  //  * @param empId to set empId.
-  //  * @return message.
-  //  */
-  // public static String reducingEarnedLeave(final int empId) {
-  //   dao().exhaustingEarnedLeave(empId);
-  //   return "Leave Balance reduced";
-  // }
   @Override
   public final String toString() {
     return "LeaveDetails [empId=" + empId + ", leaveAppliedOn=" + leaveAppliedOn + ", leaveComment=" + leaveComment
@@ -324,18 +284,70 @@ public class LeaveDetails {
     final DbConnection db = new DbConnection();
     return db.getConnect().onDemand(LeaveDetailsDAO.class);
   }
-
     /**
+     * @param empID to set empid.
+     * @return empid.
+     */
+  public static LeaveDetails listById(final int empID) {
+    return dao().find(empID);
+  }
+    /**
+     * @param leaveId to set leave id.
+     * @return message.
+     */
+  public static String approveById(final int leaveId) {
+    dao().approve(leaveId);
+    return "Leave Approved";
+  }
+  /**
+   * @param leaveId to set leaveid.
+   * @param leaveComment to set leave comment.
+   * @return message.
+   */
+  public static String denyById(final int leaveId, final String leaveComment) {
+    dao().deny(leaveId, leaveComment);
+    return "Leave Denied";
+  }
+  /**
+  * @param leaveId to set leaveId.
+  * @param empId to set empid.
+  * @return message.
+  */
+  public static String reducingLeaveBalance(final int leaveId, final int empId) {
+    dao().reduce(leaveId, empId);
+    return "Leave Balance reduced";
+  }
+  /**
+   * @param argsleaveEndDate .
+   * @param argsleaveStartDate .
+   * @return diffdays
+   */
+  public final long daysBetween(final Date argsleaveEndDate, final Date argsleaveStartDate) {
+  //  }
+    // SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+    Date d1 = argsleaveStartDate;
+    Date d2 = argsleaveEndDate;
+    try {
+      long diff = d2.getTime() - d1.getTime();
+      long diffDays = diff / (24 * 60 * 60 * 1000);
+      return diffDays;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return 0;
+  }
+     /**
      * @param argEmpId to set the arg emp id.
      * @param argLeaveStartDate to set the arg leave start date.
      * @param argLeaveEndDate to set the arg leave end date.
+     * @param argLeaveNumberOfDays to set the leave number of days.
      * @param argLeaveType to set the arg leave type.
      * @param argLeaveReason to set the arg leave reason.
-     * @param argLeaveComment to set the arg leave comment.
      * @return success message
      */
   public static String leaveApply(final int argEmpId, final Date argLeaveStartDate, final Date argLeaveEndDate,
-      final String argLeaveType, final String argLeaveReason, final String argLeaveComment) {
+      final int argLeaveNumberOfDays, final String argLeaveType,
+      final String argLeaveReason) {
     if (argLeaveStartDate.compareTo(argLeaveEndDate) > 0) {
       System.out.println("Leave End Date should be greater than equal to Leave Start Date!");
       Runtime.getRuntime().halt(0);
@@ -344,9 +356,48 @@ public class LeaveDetails {
       System.out.println("Leave Start Date should not be in past!");
       Runtime.getRuntime().halt(0);
     }
-    dao().applyLeaveDAO(argEmpId, argLeaveStartDate, argLeaveEndDate, argLeaveType, argLeaveReason, argLeaveComment);
+    dao().applyLeaveDAO(argEmpId, argLeaveStartDate, argLeaveEndDate, argLeaveNumberOfDays,
+                        argLeaveType, argLeaveReason);
     return "LEAVE APPLIED SUCCESSFULLY";
   }
+  // /**
+  //  * checking dates.
+  //  * @param argSDate the start date
+  //  * @param argEDate the starting date
+  //  * @param argEmpId the employee id
+  //  * @param today todays date
+  //  * @return the status
+  //  */
+  // public static int checkDate(final Date argSDate, final Date argEDate, final int argEmpId, final Date today) {
+  //   if (today.after(argSDate)) {
+  //     System.out.println("cannot apply before current date so please select future date");
+  //     return 1;
+  //   } else if (today.equals(argSDate)) {
+  //     System.out.println("cannot be applied on current date");
+  //     return 2;
+  //   } else if (argEDate.before(argSDate)) {
+  //     System.out.println("Greater than or equal to start date");
+  //     return 3;
+  //   }
+  //   return 0;
+  // }
+  // /**
+  //  * check leave number of days method.
+  //  * @param leaveNoOfDays to get leave number of days.
+  //  * @param leaveStartDate to get leave start date.
+  //  * @param leaveEndDate to get leave end date.
+  //  * @return result.
+  //  */
+  // public static int checkLeaveNoOfDays(final int leaveNoOfDays, final Date leaveStartDate, final Date leaveEndDate) {
+  //   Long difference = leaveEndDate.getTime() - leaveStartDate.getTime();
+  //   int leaveDays = (int) (difference / (1000L * 60 * 60 * 24));
+  //   int noOfDays = leaveDays + 1;
+  //   if (leaveNoOfDays != noOfDays) {
+  //     System.out.println("Number of days doesn't match");
+  //     return 4;
+  //   }
+  //   return 0;
+  // }
   /**
    * @param argEmpId to set arg emp id.
    * @return empid.
@@ -363,3 +414,4 @@ public class LeaveDetails {
     return dao().findTotalLeaves(argEmpId);
   }
 }
+
