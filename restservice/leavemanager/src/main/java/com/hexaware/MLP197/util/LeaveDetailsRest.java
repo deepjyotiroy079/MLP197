@@ -82,4 +82,34 @@ public class LeaveDetailsRest {
     }
 
   }
+  /**
+   * viewing pending leaveDetails under a manager.
+   * @param mgrId manager id
+   * @return list of pending leaves
+   */
+  @GET
+  @Path("/viewPendingLeaves/{mgrId}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public final List<LeaveDetails> viewPendingLeaves(@PathParam("mgrId") final int mgrId) {
+    final List<LeaveDetails> mgr = LeaveDetails.viewPendingLeaves(mgrId);
+    if (mgr == null) {
+      throw new NotFoundException("No such Manager ID: " + mgrId);
+    }
+    return mgr;
+  }
+  /**
+   * viewing leave details by id.
+   * @param leaveId the leave id
+   * @return leave detail
+   */
+  @GET
+  @Path("/leave/{leaveId}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public final LeaveDetails viewLeaveDetails(@PathParam("leaveId") final int leaveId) {
+    final LeaveDetails leave = LeaveDetails.viewLeaveById(leaveId);
+    if (leave == null) {
+      throw new NotFoundException("No such Leave ID: " + leaveId);
+    }
+    return leave;
+  }
 }

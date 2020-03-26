@@ -305,7 +305,7 @@ public class CliMain {
     int leaveNumberOfDays = input.nextInt();
     Date parsedEndDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
     System.out.println("Enter the leave number of days : ");
-    int leaveNumberOfDays = input.nextInt();
+    // int leaveNumberOfDays = input.nextInt();
     System.out.println("Select leave type : ");
     System.out.println("1. Earned Leave");
     System.out.println("2. Maternity Leave");
@@ -358,6 +358,18 @@ public class CliMain {
     System.out.println("leave Status:" + leaveStatus);
     System.out.println("leave Applied on :" + leaveAppliedOn);
   }
+  // public final void listPendingLeaves(final int leaveId, final int employeeId,
+  // final Date leaveStartDate, final Date leaveEndDate, final String leaveType,
+  // final String leaveStatus, final Date leaveAppliedOn){
+  //   LeaveDetails.viewPendingLeaves(managerId);
+  //   System.out.println("leave Id:" + leaveId);
+  //   System.out.println("Employee Id:" + employeeId);
+  //   System.out.println("Leave Start date:" + leaveStartDate);
+  //   System.out.println("Leave End Date" + leaveEndDate);
+  //   System.out.println("leave Type:" + leaveType);
+  //   System.out.println("leave Status:" + leaveStatus);
+  //   System.out.println("leave Applied on :" + leaveAppliedOn);
+  // }
   /**
    * @param args args is used as a parameter.
    * @throws ParseException throws parsed exception.

@@ -1,11 +1,11 @@
 export class Employee {
     empId: number;
-    empFullName: String;
-    email: String;
+    empFullName: string;
+    email: string;
     empMobile: number;
     empDateOfJoining: number;
-    empDesignation: String;
-    empDepartment: String;
+    empDesignation: string;
+    empDepartment: string;
     empLeaveBalance:number;
     empManagerId: number;
     

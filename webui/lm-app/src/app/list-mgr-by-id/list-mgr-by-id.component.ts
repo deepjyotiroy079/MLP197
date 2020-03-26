@@ -1,6 +1,8 @@
+import { ActivatedRoute, Params } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../employee';
 import { EmployeesService } from '../services/employees.service';
+// import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-list-mgr-by-id',
@@ -9,15 +11,17 @@ import { EmployeesService } from '../services/employees.service';
 })
 export class ListMgrByIdComponent implements OnInit {
 
-  constructor(private employeeService: EmployeesService) { }
-  title = 'View Manager details';
+  constructor(private employeeService: EmployeesService, private route: ActivatedRoute) { }
   employees: Employee;
-  getManager(): void {
-    this.employeeService.getManager().subscribe(data=>this.employees=data,err=>console.log(err));
+  getManager(empId:number): void {
+    this.employeeService.getManager(empId).subscribe(data=>this.employees=data,err=>console.log(err));
   }
   
   ngOnInit(): void {
-    this.getManager();
+    this.route.params.subscribe((params:Params) => {
+      const empId = params['empId'];
+      this.getManager(empId);
+    });
   }
 
 }

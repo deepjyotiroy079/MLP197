@@ -20,8 +20,8 @@ public class LeaveDetailsRestTest {
 	public void testApplyLeave() {
     Map<String, Object> jsonAsMap = new HashMap<>();
     jsonAsMap.put("empId", 2);
-    jsonAsMap.put("leaveStartDate", "2020-02-27");
-    jsonAsMap.put("leaveEndDate", "2020-02-27");
+    jsonAsMap.put("leaveStartDate", "2021-02-27");
+    jsonAsMap.put("leaveEndDate", "2021-02-27");
     jsonAsMap.put("leaveType", "EARNED_LEAVE");
     jsonAsMap.put("leaveReason", "General");
     jsonAsMap.put("leaveComment", "leave");
@@ -49,24 +49,21 @@ public class LeaveDetailsRestTest {
     .then()
     .assertThat()
     .statusCode(200);
-
-
-
   }
-	}
-@Test
-public void testApproveLeave() throws AssertionError, URISyntaxException {
-  Map<String, Integer> jsonAsMap = new HashMap<>();
-  jsonAsMap.put("leaveId", 3);
-  jsonAsMap.put("empId", 2);
-  given()
-  .contentType(ContentType.JSON)
-  .body(jsonAsMap)
-  .post("http://localhost:8080/MLP197/api/leaveDetails/approveLeave")
-  .then()
-  .assertThat()
-  .statusCode(200);
-}
+	
+  @Test
+  public void testApproveLeave() throws AssertionError, URISyntaxException {
+    Map<String, Integer> jsonAsMap = new HashMap<>();
+    jsonAsMap.put("leaveId", 3);
+    jsonAsMap.put("empId", 2);
+    given()
+    .contentType(ContentType.JSON)
+    .body(jsonAsMap)
+    .post("http://localhost:8080/MLP197/api/leaveDetails/approveLeave")
+    .then()
+    .assertThat()
+    .statusCode(200);
+  }
 }
 
 

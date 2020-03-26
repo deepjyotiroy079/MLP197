@@ -88,6 +88,13 @@ public interface EmployeeDAO {
    */
   @SqlQuery("SELECT EMP_LEAVE_BALANCE FROM EMPLOYEES WHERE EMP_ID =:empId")
   int findLeaveBalance(@Bind("empId")int empId);
+   /**
+   * return all the details of the selected employee.
+   * @return the employee object
+   */
+  @SqlQuery("SELECT * FROM EMPLOYEES")
+  @Mapper(EmployeeMapper.class)
+  List<Employee> listAllEmployees();
   /**
    * close with no args is used to close the connection.
    */

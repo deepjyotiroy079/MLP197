@@ -34,6 +34,14 @@ public interface LeaveDetailsDAO {
   @Mapper(LeaveDetailsMapper.class)
   LeaveDetails find(@Bind("empID") int empID);
   /**
+   * returns all the leave details of given employee.
+   * @param leaveId the employee id
+   * @return the leave details of employee
+   */
+  @SqlQuery("SELECT * FROM LEAVE_DETAILS WHERE LEAVE_ID = :leaveId")
+  @Mapper(LeaveDetailsMapper.class)
+  LeaveDetails viewLeaveByLd(@Bind("leaveId") int leaveId);
+  /**
    * returns leave details of particular employee.
    * @param empID the employee id
    * @return the leave details object
@@ -111,7 +119,24 @@ public interface LeaveDetailsDAO {
   @SqlQuery("SELECT * FROM LEAVE_DETAILS WHERE LEAVE_DETAILS.EMP_ID = :empId")
   @Mapper(LeaveDetailsMapper.class)
   List<LeaveDetails> getLeaveHistory(@Bind("empId") int empId);
+  /**
+   * Returning all pending leaveDetails under a particular manager.
+   * @param mgrId the manager Id
+   * @return the list pending leaves under a manager
+   */
+  @SqlQuery("SELECT * FROM LEAVE_DETAILS WHERE LEAVE_STATUS = 'PENDING'"
+      + "AND EMP_ID IN (SELECT E.EMP_ID FROM EMPLOYEES E, EMPLOYEES M WHERE E.EMP_MANAGER_ID =:mgrId)")
+  @Mapper(LeaveDetailsMapper.class)
+  List<LeaveDetails> pendingDetails(@Bind("mgrId") int mgrId);
 
+  /**
+   * listing leave details by id.
+   * @param leaveId the leave id
+   * @return the leave details for given id
+   */
+  @SqlQuery("SELECT * FROM LEAVE_DETAILS WHERE LEAVE_ID=:leaveId")
+  @Mapper(LeaveDetailsMapper.class)
+  LeaveDetails displayLeaveById(@Bind("leaveId") int leaveId);
     /**
      * close with no args is used to close the connection.
      */

@@ -15,16 +15,16 @@ export class EmployeesService {
     return this.http.get<Employee[]>('http://localhost:8080/MLP197/api/employees');
 
   }
-  getManager(): Observable<Employee> {
+  getManager(empId:number): Observable<Employee> {
     console.log('getManager called on employee.service');
-    return this.http.get<Employee>('http://localhost:8080/MLP197/api/employees/manager/2');
-}
-getEmpByDepartment(): Observable<Department[]> {
-  console.log('getEmpByDepartment called on employee.service');
-  return this.http.get<Department[]>('http://localhost:8080/MLP197/api/employees/listDepartments');
-}
-  getEmpById(): Observable<Employee> {
-    console.log('getEmployees called on employee.service');
-    return this.http.get<Employee>('http://localhost:8080/MLP197/api/employees/listemployee/2');
+    return this.http.get<Employee>('http://localhost:8080/MLP197/api/employees/manager/'+empId);
+  }
+  getEmpByDepartment(): Observable<Department[]> {
+    console.log('getEmpByDepartment called on employee.service');
+    return this.http.get<Department[]>('http://localhost:8080/MLP197/api/employees/listDepartments');
+  }
+  getEmpById(empId:number): Observable<Employee> {
+    console.log('getEmpById called on employee.service');
+    return this.http.get<Employee>('http://localhost:8080/MLP197/api/employees/listemployee/'+empId);
   }
 }

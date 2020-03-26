@@ -292,6 +292,13 @@ public class LeaveDetails {
     return dao().find(empID);
   }
     /**
+     * @param leaveId to set empid.
+     * @return empid.
+     */
+  public static LeaveDetails listByLd(final int leaveId) {
+    return dao().viewLeaveByLd(leaveId);
+  }
+    /**
      * @param leaveId to set leave id.
      * @return message.
      */
@@ -322,7 +329,7 @@ public class LeaveDetails {
    * @param argsleaveStartDate .
    * @return diffdays
    */
-  public final long daysBetween(final Date argsleaveEndDate, final Date argsleaveStartDate) {
+  public static long daysBetween(final Date argsleaveEndDate, final Date argsleaveStartDate) {
   //  }
     // SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
     Date d1 = argsleaveStartDate;
@@ -356,32 +363,15 @@ public class LeaveDetails {
       System.out.println("Leave Start Date should not be in past!");
       Runtime.getRuntime().halt(0);
     }
+    long count = daysBetween(argLeaveEndDate, argLeaveStartDate);
+    if (count != argLeaveNumberOfDays) {
+      System.out.println("Leave number of days did not match your leave days");
+      Runtime.getRuntime().halt(0);
+    }
     dao().applyLeaveDAO(argEmpId, argLeaveStartDate, argLeaveEndDate, argLeaveNumberOfDays,
                         argLeaveType, argLeaveReason);
     return "LEAVE APPLIED SUCCESSFULLY";
   }
-  // /**
-  //  * checking dates.
-  //  * @param argSDate the start date
-  //  * @param argEDate the starting date
-  //  * @param argEmpId the employee id
-  //  * @param today todays date
-  //  * @return the status
-  //  */
-  // public static int checkDate(final Date argSDate, final Date argEDate, final int argEmpId, final Date today) {
-  //   if (today.after(argSDate)) {
-  //     System.out.println("cannot apply before current date so please select future date");
-  //     return 1;
-  //   } else if (today.equals(argSDate)) {
-  //     System.out.println("cannot be applied on current date");
-  //     return 2;
-  //   } else if (argEDate.before(argSDate)) {
-  //     System.out.println("Greater than or equal to start date");
-  //     return 3;
-  //   }
-  //   return 0;
-  // }
-  // /**
   //  * check leave number of days method.
   //  * @param leaveNoOfDays to get leave number of days.
   //  * @param leaveStartDate to get leave start date.
@@ -412,6 +402,22 @@ public class LeaveDetails {
    */
   public static int totalLeaves(final int argEmpId) {
     return dao().findTotalLeaves(argEmpId);
+  }
+  /**
+   * viewing pending leave details under a manager.
+   * @param mgrId manager id
+   * @return pending leave list
+   */
+  public static List<LeaveDetails> viewPendingLeaves(final int mgrId) {
+    return dao().pendingDetails(mgrId);
+  }
+  /**
+   * retuns leave details of given id.
+   * @param leaveId the leave id
+   * @return the given leave details
+   */
+  public static LeaveDetails viewLeaveById(final int leaveId) {
+    return dao().displayLeaveById(leaveId);
   }
 }
 

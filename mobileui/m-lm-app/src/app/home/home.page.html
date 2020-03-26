@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title size="large">
+      LMS
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Blank</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-card *ngFor="let employee of employees">
+    <ion-card-header>
+      <ion-card-subtitle>{{ employee.empDesignation | uppercase}}</ion-card-subtitle>
+      <ion-card-title>{{ employee.empFullName | titlecase }}</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      Employee Id : {{ employee.empId }} <br />
+      Department : {{ employee.empDepartment }}
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

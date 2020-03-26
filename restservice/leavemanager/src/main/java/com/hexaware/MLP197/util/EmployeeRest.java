@@ -26,7 +26,7 @@ public class EmployeeRest {
   @Produces(MediaType.APPLICATION_JSON)
   public final Employee[] employeesList() {
     System.out.println("Employees List");
-    final Employee[] employees = Employee.listAll();
+    final Employee[] employees = Employee.listEmployees();
     return employees;
   }
 

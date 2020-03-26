@@ -112,10 +112,10 @@ public class EmployeeTest {
    */
   @Test
   public final void testHashCode() {
-    Employee emp1 = new Employee(2, "Deepjyoti Roy", "deepjyotiroy079@gmail.com", 9999888823L, "2020-02-04",
+    Employee emp1 = new Employee(2, "Deepjyoti Roy", "deepjyotiroy079@gmail.com", 9999888823L, "2021-02-04",
           "Trainee", "Hexavarsity", 14, 1);
     assertEquals(emp1.hashCode(), new Employee(2, "Deepjyoti Roy",
-          "deepjyotiroy079@gmail.com", 9999888823L, "2020-02-04",
+          "deepjyotiroy079@gmail.com", 9999888823L, "2021-02-04",
           "Trainee", "Hexavarsity", 14, 1).hashCode());
   }
   /**
@@ -124,7 +124,7 @@ public class EmployeeTest {
    */
   @Test
   public final void testListById(@Mocked final EmployeeDAO dao) {
-    final Employee emp1 = new Employee(2, "Deepjyoti Roy", "deepjyotiroy079@gmail.com", 9999888823L, "2020-02-04",
+    final Employee emp1 = new Employee(2, "Deepjyoti Roy", "deepjyotiroy079@gmail.com", 9999888823L, "2021-02-04",
           "Trainee", "Hexavarsity", 14, 1);
 
     new Expectations() {

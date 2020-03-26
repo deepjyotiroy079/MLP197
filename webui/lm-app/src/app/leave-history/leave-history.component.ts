@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LeaveDetailsService } from '../services/leave-details.service';
 import { leavedetails } from '../leavedetails';
 import { Observable } from 'rxjs';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-leave-history',
@@ -10,13 +11,16 @@ import { Observable } from 'rxjs';
 })
 export class LeaveHistoryComponent implements OnInit {
 
-  constructor(private leaveDetailsService: LeaveDetailsService) { }
+  constructor(private leaveDetailsService: LeaveDetailsService, private route:ActivatedRoute) { }
   leaveDetails: leavedetails[];
+  getLeaveHistory(empId:number): void {
+    this.leaveDetailsService.getLeaveHistory(empId).subscribe(data=>this.leaveDetails=data, err=>console.log(err));
+  }
   ngOnInit() {
-    this.getLeaveHistory();
-  }
-  getLeaveHistory(): void {
-    this.leaveDetailsService.getLeaveHistory().subscribe(data=>this.leaveDetails=data, err=>console.log(err));
-  }
+    this.route.params.subscribe((params:Params) => {
+      const empId = params['empId'];
+      this.getLeaveHistory(empId);
+    });
 
+}
 }

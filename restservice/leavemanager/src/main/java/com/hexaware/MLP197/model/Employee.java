@@ -294,4 +294,12 @@ public class Employee {
   public static int findingEmpLeaveBalance(final int argEmpId) {
     return dao().findLeaveBalance(argEmpId);
   }
+  /**
+   * list all employee details.
+   * @return all employees' details
+   */
+  public static Employee[] listEmployees() {
+    final List<Employee> es = dao().listAllEmployees();
+    return es.toArray(new Employee[es.size()]);
+  }
 }

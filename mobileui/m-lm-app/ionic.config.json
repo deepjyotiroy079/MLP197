@@ -1,0 +1,7 @@
+{
+  "name": "m-lm-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

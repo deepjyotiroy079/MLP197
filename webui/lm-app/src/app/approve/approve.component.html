@@ -1,0 +1,34 @@
+<div class="alert alert-warning text-center">
+  <h1 class="display-4">
+    Approve / Deny Leave
+  </h1>
+</div>
+<div class="container">
+  <div class="row p-4">
+    <div class="col-md-6">
+      <h5>Employee Id : {{ employee.empId }}</h5>
+      <h5>Employee Name : {{ employee.empFullName }}</h5>
+      <h5>Leave Balance : {{ employee.empLeaveBalance }}</h5>
+    </div>
+    <div class="col-md-6 px-5">
+      <h5>Leave Start Date : {{ leavedetailsData.leaveStartDate | date :'yyyy-MM-dd'}}</h5>
+      <h5>Leave End Date : {{ leavedetailsData.leaveEndDate | date :'yyyy-MM-dd'}}</h5>
+      <h5>Leave Number of Days : {{ leavedetailsData.leaveNoOfDays }}</h5>
+      <h5>Leave Type : {{ leavedetailsData.leaveType }}</h5>
+      <h5>Leave Reason : {{ leavedetailsData.leaveReason }}</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <form [formGroup]="approveForm">
+        <div class="form-group">
+          <label for="manager_comments" class="h5">Manager Comments : </label>
+          <textarea class="form-control" rows="3" placeholder="Enter comments..." formControlName="comments"></textarea>
+          <button type="submit" (click)="fnApprove()" class="btn btn-primary d-inline m-2 btn-lg">Approve</button>
+          <button type="submit" (click)="fnDeny()" class="btn btn-danger d-inline m-2 btn-lg">Deny</button>
+          <button type="submit" (click)="fnCancel()" class="btn btn-secondary d-inline m-2 btn-lg">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

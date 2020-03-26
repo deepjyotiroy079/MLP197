@@ -1,0 +1,43 @@
+<div class="alert alert-primary text-center">
+  <h1 class="display-4">
+    Apply Leave
+  </h1>
+</div>
+<div class="container py-5">
+  <div class="row">
+    <div class="col-6">
+        <form [formGroup]="empForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="Email">Employee Id : </label>
+              <input type="email" formControlName="empId" class="form-control" placeholder="Enter employee id" required>
+            </div>
+            <div class="form-group">
+              <label for="leave_start_date">Leave Start Days</label>
+              <input type="date" formControlName="leaveStartDate" class="form-control" placeholder="Leave Start Date" required>
+            </div>
+            <div class="form-group">
+              <label for="leave_end_date">Leave End Date</label>
+              <input type="date" formControlName="leaveEndDate" class="form-control" placeholder="Leave End Date" required>
+            </div>
+            <div class="form-group">
+              <label for="leave_no_of_days">Leave Number Of Date</label>
+              <input type="number" formControlName="leaveNoOfDays" class="form-control" placeholder="Leave Number of Days" required>
+            </div>
+            <div class="form-group">
+              <label for="leaveType">Leave Type</label>
+              <select id="leaveType" class="form-control" formControlName="leaveType">
+                <option selected>Choose...</option>
+                <option *ngFor="let type of typeOfLeaves">{{ type }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="leave_reason">Leave Reason</label>
+              <input type="text" formControlName="leaveReason" class="form-control" placeholder="Leave Reason">
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-lg m-3">Apply Leave</button>
+            <button type="submit" (click)="fnCancel()" class="btn btn-secondary btn-lg m-3">Cancel</button>
+        </form>        
+    </div>
+  </div>
+</div>
